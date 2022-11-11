@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.0-beta.12/Rx.min.js"></script>
+  </head>
+  <body>
+    <script>
+      // 1. 模拟多播
+      // const source = Rx.Observable.interval(1000).take(3);
+      // const subject = {
+      //   observers: [],
+      //   subscribe(target) {
+      //     this.observers.push(target);
+      //   },
+      //   next: function (value) {
+      //     this.observers.forEach((next) => next(value));
+      //   },
+      // };
+
+      // source.subscribe(subject);
+
+      // subject.subscribe((value) => console.log("A " + value));
+
+      // setTimeout(() => {
+      //   subject.subscribe((value) => console.log("B " + value));
+      // }, 1000);
+
+      // 2. 多播 Rx.Subject()
+
+      // const source = Rx.Observable.interval(1000).take(3);
+      // const subject = new Rx.Subject();
+
+      // source.subscribe(subject);
+
+      // subject.subscribe((value) => console.log("A " + value));
+
+      // setTimeout(() => {
+      //   subject.subscribe((value) => console.log("B " + value));
+      // }, 1000);
+
+      // BehaviorSubject 和 Subject 区别
+
+      // const subject = new Rx.Subject();
+
+      // subject.subscribe((value) => console.log("A：" + value));
+
+      // subject.next(1);
+      // // A：1
+      // subject.next(2);
+      // // A：2
+
+      // setTimeout(() => {
+      //   subject.subscribe((value) => console.log("B：" + value)); // 1s后订阅，无法收到值
+      // }, 1000);
+
+      // const subject = new Rx.BehaviorSubject(0); // 需要传入初始值
+
+      // subject.subscribe((value) => console.log("A：" + value));
+      // // A：0
+      // subject.next(1);
+      // // A：1
+      // subject.next(2);
+      // // A：2
+
+      // setTimeout(() => {
+      //   subject.subscribe((value) => console.log("B：" + value));
+      //   // B：2
+      // }, 1000);
+
+      const source = Rx.Observable.interval(3000);
+      const result = source.concatMap((val) =>
+        Rx.Observable.interval(1000).take(2)
+      );
+      result.subscribe((x) => console.log(x));
+    </script>
+  </body>
+</html>
